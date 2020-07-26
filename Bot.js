@@ -22,7 +22,7 @@
   Recruits.defer.then(() => console.log(Recruits.size + " keys loaded"))
   const invites = {};
   const wait = require('util').promisify(setTimeout);
-  const version = '2.6.2'
+  const version = '2.6.4'
   let TicketNum = 0
 
   client.on('ready', () => {
@@ -77,7 +77,7 @@
   
 
   //Commands
-  if (command === '!top'){
+  if (command === '-top'){
     let Fscore = Leader.get("first", "score");
     let Sscore = Leader.get("second", "score");
     let Tscore = Leader.get("third", "score");
@@ -112,7 +112,7 @@
     };
     msg.channel.send({ embed });
   }
-  if(command === '!level'){
+  if(command === '-level'){
     let level = Levels.get(msg.author.id)
     if (level > 10) var rank = 1;
     if (level > 25) var rank = 2;
@@ -147,10 +147,10 @@
   if (command === 'oof') {
     msg.channel.send('oof');
   }
-  if(command ==='!test'){
+  if(command ==='-test'){
   msg.channel.send(`Fully Functional on version ${version} by starfihgter #7943`)
   }
-  if (command === '!invites'){
+  if (command === '-invites'){
     if (args.length === 0){
     let uinvite = Recruits.get(msg.author.id)
     let embed = {
@@ -186,7 +186,7 @@
       msg.channel.send({ embed });
   }
 }
-  if (command === '!store') {
+  if (command === '-store') {
     let embed = {
       "color": 16098851,
       "footer": {
@@ -202,7 +202,7 @@
     };
       msg.channel.send({ embed });
   }
-if (command === '!ip') {
+if (command === '-ip') {
   let embed = {
     "color": 16098851,
     "footer": {
@@ -218,7 +218,7 @@ if (command === '!ip') {
   };
     msg.channel.send({ embed });
   }
- if (command === '!rules') {
+ if (command === '-rules') {
    let embed = {
       "color": 16098851,
       "footer": {
@@ -234,7 +234,7 @@ if (command === '!ip') {
     };
       msg.channel.send({ embed });
     }
-if (msg.content === '!help') {
+if (msg.content === '-help') {
   let embed = {
     "title": "**List of Commands**",
     "description": "*If something is not working as if should please contact @starfihgter#7943*",
@@ -248,43 +248,43 @@ if (msg.content === '!help') {
     },
     "fields": [
       {
-        "name": "**!store**",
+        "name": "**-store**",
         "value": "Gives the link to the server store"
       },
       {
-        "name": "**!rules**",
+        "name": "**-rules**",
         "value": "Gives the link to the server rules"
       },
       {
-        "name": "**!ip**",
+        "name": "**-ip**",
         "value": "Gives the server ip"
       },
       {
-        "name": "**!invites**",
+        "name": "**-invites**",
         "value": "See how many people you've invited to the WiserMC Discord"
       },
       {
-        "name": "**!new**",
+        "name": "**-new**",
         "value": "opens a new support ticket"
       },
       {
-        "name": "**!close**",
+        "name": "**-close**",
         "value": "Closes a ticket (Ticket channels only)"
       },
       {
-        "name": "**!level**",
+        "name": "**-level**",
         "value": "Shows your server level! \n *Please note there is a 10 second cooldown on messages*"
       },
       {
-        "name": "**!bug [description of bug]**",
+        "name": "**-bug [description of bug]**",
         "value": "Reports a bug to be investigated by the staff team"
       },
       {
-        "name": "**!suggest [suggestion]**",
+        "name": "**-suggest [suggestion]**",
         "value": "Create a suggestion to be voted on by the community"
       },
       {
-        "name": "**!help mod**",
+        "name": "**-help mod**",
         "value": "Secret Commands for Server Staff"
       }
     ]
@@ -293,7 +293,7 @@ if (msg.content === '!help') {
 }
 
 //Tickets
-if (command === '!new') {
+if (command === '-new') {
     const Name = msg.author.username
     TicketNum++;
     msg.guild.createChannel('Ticket-'+TicketNum, 'text')
@@ -303,6 +303,7 @@ if (command === '!new') {
     chan.setParent('634176228399775765')
     wait(3000)
     const staff = msg.guild.roles.find("name", "Support Team")
+    msg.delete();
     chan.overwritePermissions(msg.guild.id, {
       SEND_MESSAGES: false,
       READ_MESSAGES: false,
@@ -321,7 +322,7 @@ if (command === '!new') {
     }
     setTimeout(ps, 2000)
 }
-  if (command === '!close'){ 
+  if (command === '-close'){ 
     if (msg.channel.parentID !== '634176228399775765') {
       msg.channel.send("This is not a Ticket Channel")
       return;
@@ -330,9 +331,9 @@ if (command === '!new') {
     msg.author.send('Your ticket has now been closed. Feel free to open another one if you need help!')
     console.log(`Ticket Closed.`)
 }
-if (command === '!bug'){
+if (command === '-bug'){
   let suggestion = args.slice(0).join(" ");
-  const channel = msg.guild.channels.find(ch => ch.name === 'bug-reports');
+  const channel = msg.guild.channels.find(ch => ch.name === '📧bug-reports');
   let embed = {
     "title": "**Bug Report!**",
     "description": `From ${msg.author}`,
@@ -351,9 +352,9 @@ if (command === '!bug'){
   channel.send({ embed });
   msg.delete();
 }
-if (command === '!suggest'){
+if (command === '-suggest'){
   let suggestion = args.slice(0).join(" ");
-  const channel = msg.guild.channels.find(ch => ch.name === 'suggestions');
+  const channel = msg.guild.channels.find(ch => ch.name === '📧suggestions');
   let embed = {
     "title": "**New Suggestion!**",
     "description": `From ${msg.author}`,
@@ -380,7 +381,7 @@ if (command === '!suggest'){
 }
 //Moderation
 if (msg.member.roles.find("name", "Developer") || msg.member.roles.find("name", "Owner") || msg.member.roles.find("name", "Server Staff") || msg.member.roles.find("name", "Support Team" ) || msg.member.roles.find("name", "Administrator") ){
-  if (msg.content === '!help mod'){
+  if (msg.content === '-help mod'){
     let embed = {
       "title": "**Admin Commands**",
       "description": "*Administrative commands*",
@@ -394,43 +395,43 @@ if (msg.member.roles.find("name", "Developer") || msg.member.roles.find("name", 
       },
       "fields": [
         {
-          "name": "**!mute [@User]**",
+          "name": "**-mute [@User]**",
           "value": "Indefinetly mutes a user, stopping them from sending messages or connecting to voice channels"
         },
         {
-          "name": "**!tmute [@user] [minutes]**",
+          "name": "**-tmute [@user] [minutes]**",
           "value": "temporarily mutes a user, stopping them from sending messages or connecting to voice channels"
         },
         {
-          "name": "**!unmute [@user]**",
+          "name": "**-unmute [@user]**",
           "value": "unmutes a user"
         },
         {
-          "name": "**!kick [@user]**",
+          "name": "**-kick [@user]**",
           "value": "kicks a user"
         },
         {
-          "name": "**!ban [@user]**",
+          "name": "**-ban [@user]**",
           "value": "Bans a user"
         },
         {
-          "name": "**!purge [Number of Messages]**",
+          "name": "**-purge [Number of Messages]**",
           "value": "removes up to 500 messages from a channel"
         },
         {
-          "name": "**!gstart [hours] [item]**",
+          "name": "**-gstart [hours] [item]**",
           "value": "starts a giveaway"
         }
       ]
     };
     msg.channel.send({ embed });
   }
-  if (command === '!mute'){
+  if (command === '-mute'){
     var member = msg.mentions.members.first()
     var mute = msg.guild.roles.find("name", "Muted")
     member.addRole(mute)
   }  
-  if (command === '!tmute'){
+  if (command === '-tmute'){
     var member = msg.mentions.members.first()
     var time = args[1]*60000
     var mute = msg.guild.roles.find("name", "Muted")
@@ -440,22 +441,22 @@ if (msg.member.roles.find("name", "Developer") || msg.member.roles.find("name", 
     member.addRole(mute)
     setTimeout(unmute, time)
   }
-  if (command === '!unmute'){
+  if (command === '-unmute'){
     var member = msg.mentions.members.first()
     var mute = msg.guild.roles.find("name", "Muted")
     member.removeRole(mute)
   }
-  if (command === '!kick'){
+  if (command === '-kick'){
     let victim = msg.mentions.members.first()
     let reason = args.slice(1).join(" ");
     victim.kick(reason);
   }
-  if (command === '!ban'){
+  if (command === 'ban'){
     let victim = msg.mentions.members.first()
     let reason = args.slice(1).join(" ")
     victim.ban(reason)
   }
-  if (command === '!purge'){
+  if (command === '-purge'){
     if (args[0] > 100){
       msg.channel.bulkDelete(100)
       let n = 100
@@ -480,7 +481,7 @@ if (msg.member.roles.find("name", "Developer") || msg.member.roles.find("name", 
     }else msg.channel.bulkDelete(args[0])
     msg.channel.send(`${args[0]} messages deleted.`)
   }
-if (command === '!gstart'){
+if (command === '-gstart'){
   const time = args[0]
   let item = args.slice(1).join(" ");
   msg.delete()
@@ -526,7 +527,7 @@ if (command === '!gstart'){
   setTimeout(Reaction, 2000)
   }
 } else{
- if (command === '!mute' || command === '!tmute' || command === '!kick' || command === '!ban' || command === '!unmute' || command === '!purge' || command === '!gstart' || msg.content === '!help mod'){
+ if (command === '-mute' || command === '-tmute' || command === '-kick' || command === '-ban' || command === '-unmute' || command === '-purge' || command === '-gstart' || msg.content === '-help mod'){
  msg.channel.send('You do not have permission to use this command.')
  }
  return;
